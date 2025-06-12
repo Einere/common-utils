@@ -32,4 +32,5 @@ This is collection of my common utility functions.
 | mapCat          | concat arrays with map function              |
 | dropRight       | remove n items from tail in array            |
 | interpose       | insert returned value at each item in array  |
+| pick            | get object only include specific keys        |
 
