@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ESNext", // 타겟 JS 버전 (Node.js 14 이상에서 충분)
+    "module": "ESNext", // ★ 중요: ES Module 문법으로 컴파일합니다.
+    "moduleResolution": "node", // 모듈 해석 방식 (Node.js 방식)
+    "esModuleInterop": true, // CommonJS 모듈을 ES Module 방식으로 import 할 수 있도록 돕습니다.
+    "forceConsistentCasingInFileNames": true,
+    "strict": true, // 엄격한 타입 체크
+    "skipLibCheck": true, // 라이브러리 타입 체크 건너뛰기 (선택 사항이지만 유용)
+    "declaration": true, // ★ 중요: .d.ts 타입 정의 파일을 생성합니다.
+    "outDir": "./dist", // 빌드 결과물이 저장될 디렉토리
+    "rootDir": "./src",
+  },
+  "include": [
+    "src/**/*.ts" // src 폴더 내의 모든 .ts 파일을 컴파일 대상에 포함
+  ],
+  "exclude": [
+    "node_modules",
+    "dist" // dist 폴더는 컴파일 대상에서 제외
+  ]
+}

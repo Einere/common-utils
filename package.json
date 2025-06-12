@@ -1,0 +1,43 @@
+{
+  "name": "@einere/common-utils",
+  "version": "1.0.0",
+  "description": "Einere's common utilities",
+  "type": "module",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./dist/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "einere",
+    "common",
+    "utility"
+  ],
+  "author": "Einere <kjwsx23@einere.me>",
+  "license": "MIT",
+  "homepage": "https://github.com/einere/common-utils",
+  "bugs": {
+    "url": "https://github.com/einere/common-utils"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/einere/common-utils"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}
