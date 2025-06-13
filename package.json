@@ -1,9 +1,9 @@
 {
   "name": "@einere/common-utils",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Einere's common utilities",
   "type": "module",
-  "module": "dist/index.js",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
