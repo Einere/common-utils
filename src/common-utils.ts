@@ -66,11 +66,13 @@ export function* infinity(start = 0) {
  * @example limit(10, infinity());
  *  */
 export function* limit<T = unknown>(limit: number, iter: Iterable<T>) {
-  for (const e of iter) {
-    yield e;
+  let count = 0;
 
-    // return을 만나면 더이상 해당 이터레이터로 순회할 수 없습니다
-    if (e === limit) return;
+  for (const e of iter) {
+    if(count === limit) return;
+
+    yield e;
+    count += 1;
   }
 }
 
