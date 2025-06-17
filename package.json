@@ -1,6 +1,6 @@
 {
   "name": "@einere/common-utils",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Einere's common utilities",
   "type": "module",
   "main": "./dist/index.js",

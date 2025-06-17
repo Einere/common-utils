@@ -77,9 +77,9 @@ export function* limit<T = unknown>(limit: number, iter: Iterable<T>) {
 }
 
 /* 이터레이터의 시작 지점과 끝 지점까지의 요소를 얻는 제네레이터
- *
+ * @example slice(2, 4, "abcde");
  * */
-function *slice<T = unknown>(start: number, end: number, iter: Iterable<T>) {
+export function *slice<T = unknown>(start: number, end: number, iter: Iterable<T>) {
   let index = 0;
   for(const e of iter) {
     if(start <= index  && index <= end) {
