@@ -76,6 +76,19 @@ export function* limit<T = unknown>(limit: number, iter: Iterable<T>) {
   }
 }
 
+/* 이터레이터의 시작 지점과 끝 지점까지의 요소를 얻는 제네레이터
+ *
+ * */
+function *slice<T = unknown>(start: number, end: number, iter: Iterable<T>) {
+  let index = 0;
+  for(const e of iter) {
+    if(start <= index  && index <= end) {
+      yield e;
+    }
+    index += 1;
+  }
+}
+
 /* n번째 요소를 얻는 함수
  * @example nth(2, [1, 2, 3]); // 3
  * */
@@ -143,6 +156,8 @@ export function dropRight<T = unknown>(length = 1, iterable: Iterable<T>) {
 
   return arr.slice(0, maxLength - length);
 }
+
+
 
 
 /* 각 요소의 사이에 요소를 집어넣는 함수.
