@@ -314,10 +314,15 @@ export function pick<T extends Record<PropertyKey, any>, K extends PropertyKey>(
  * 빈복자에서 특정 조건을 만족하는 요소만 걸러내는 제네레이터.
  * @example filter((n) => n % 2 === 0, [0, 1, 2, 3, 4, 5]) // 0, 2, 4
  * */
-export function* filter<T = unknown>(
+function filter<T, S extends T>(
+  filterFn: (e: T) => e is S,
+  iter: Iterable<T>,
+): Iterable<S>;
+function filter<T>(filterFn: (e: T) => boolean, iter: Iterable<T>): Iterable<T>;
+function* filter<T>(
   filterFn: (e: T) => boolean,
   iter: Iterable<T>,
-) {
+): Iterable<T> {
   for (const item of iter) {
     if (filterFn(item)) {
       yield item;
