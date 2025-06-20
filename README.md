@@ -19,11 +19,11 @@ Thank you. 😄
 | isTruthy        | check parameter is truthy                                |
 | isFalsy         | check parameter is falsy                                 |
 | isEmptyStr      | check parameter is empty string                          |
-| isNotEmptyStr   | check parameter is not empty string                      |
+| isNonEmptyStr   | check parameter is not empty string                      |
 | isEmptyArray    | check parameter is empty array                           |
-| isNotEmptyArray | check parameter is not empty array                       |
+| isNonEmptyArray | check parameter is not empty array                       |
 | isEmptyObj      | check parameter is empty object                          |
-| isNotEmptyObj   | check parameter is not empty object                      |
+| isNonEmptyObj   | check parameter is not empty object                      |
 | isFunction      | check parameter is function                              |
 | isNumber        | check parameter is valid number                          |
 | getValue        | get value from parameter with default value              |
