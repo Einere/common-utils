@@ -63,7 +63,7 @@ export function* infinity(start = 0) {
 }
 
 /* 유한 제네레이터
- * @example limit(10, infinity());
+ * @example limit(10, infinity()); // [0, 1, 2, ... 9]
  *  */
 export function* limit<T = unknown>(limit: number, iter: Iterable<T>) {
   let count = 0;
@@ -157,9 +157,6 @@ export function dropRight<T = unknown>(length = 1, iterable: Iterable<T>) {
   return arr.slice(0, maxLength - length);
 }
 
-
-
-
 /* 각 요소의 사이에 요소를 집어넣는 함수.
  * @example interpose<number | string>(() => ',', [1, 2, 3]); // [1, ",", 2, ",", 3]
  * */
@@ -183,4 +180,24 @@ export function pick<T extends Record<PropertyKey, any>, K extends PropertyKey>(
     }
     return acc;
   }, {}) as { [P in K & keyof T]: T[P] }; // 타입 단언을 통해 최종 반환 타입을 명확히 합니다.
+}
+
+/**
+ * 빈복자에서 특정 조건을 만족하는 요소만 걸러내는 제네레이터.
+ * @example filter((n) => n % 2 === 0, [0, 1, 2, 3, 4, 5]) // [0, 2, 4]
+ * */
+export function* filter<T = unknown>(filterFn: (e: T) => boolean, iter: Iterable<T>) {
+  for (const item of iter) {
+    if (filterFn(item)) {
+      yield item;
+    }
+  }
+}
+
+/**
+ * 반복자를 배열로 변환하는 함수.
+ * @example toArray(limit(5, infinity())); // [0, 1, 2, 3, 4]
+ * */
+export function toArray<T = unknown>(iter: Iterable<T>) {
+  return Array.from(iter);
 }

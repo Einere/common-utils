@@ -1,6 +1,12 @@
 # Common Utils
 
-This is collection of my common utility functions.
+This is collection of my common utility package based on functional paradigm.
+
+# Warning
+
+This is my personal package. So it not safe.
+If you want reliable functional utility package, use [@fxts/core](https://fxts.dev).
+Thank you. 😄
 
 ## Methods
 
@@ -34,4 +40,5 @@ This is collection of my common utility functions.
 | dropRight       | remove n items from tail in array                        |
 | interpose       | insert returned value at each item in array              |
 | pick            | get object only include specific keys                    |
-
+| filter          | filter items from iterator                               |
+| toArray         | convert iterator into array                              |
