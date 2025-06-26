@@ -71,7 +71,7 @@ export const isFalsy = (value: unknown) => negate(isTruthy(value));
  *  isEmptyStr("");    // true
  *  isEmptyStr("foo"); // false
  * */
-export const isEmptyStr = (str: unknown) =>
+export const isEmptyStr = (str: unknown): str is string =>
   typeof str === "string" && str.length === 0;
 
 /**
@@ -80,7 +80,7 @@ export const isEmptyStr = (str: unknown) =>
  *  isNonEmptyStr("");    // false
  *  isNonEmptyStr("foo"); // true
  * */
-export const isNonEmptyStr = (str: unknown) =>
+export const isNonEmptyStr = (str: unknown): str is string =>
   typeof str === "string" && str.length > 0;
 
 /**
