@@ -1,6 +1,6 @@
 {
   "name": "@einere/common-utils",
-  "version": "1.0.12",
+  "version": "1.1.0",
   "description": "Einere's common utilities",
   "type": "module",
   "main": "./dist/index.js",
@@ -17,6 +17,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node ./dist/index.js",
+    "dev": "npm run build && npm run start",
+    "test": "npm unlink @einere/common-utils && npm run build && npm link",
     "prepublishOnly": "npm run build"
   },
   "keywords": [

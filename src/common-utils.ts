@@ -215,83 +215,100 @@ export function* slice<T = unknown>(
 }
 
 /**
- * n번째 요소를 얻는 함수
+ * n번째 요소를 얻는 함수. 만약 범위를 벗어난 요소를 얻고자 한다면 undefined 를 반환한다.
  * @example nth(2, [1, 2, 3]); // 3
  * */
-export function nth<T = unknown>(index: number, list: T[]) {
+export function nth<T = unknown>(index: number, iterable: Iterable<T>) {
   if (!isNumber(index)) throw new Error("index must be number");
-  if (!Array.isArray(list)) throw new Error("list must be indexed");
-  if (index < 0 || index > list.length - 1)
-    throw new Error("index is out of bound");
 
-  return list[index];
+  let i = 0;
+  for (const e of iterable) {
+    if (i === index) {
+      return e;
+    }
+    i += 1;
+  }
 }
 
 /**
- * 첫번째 요소를 얻는 함수
+ * 첫번째 요소를 얻는 함수. 만약 첫번째가 비어있다면 undefined 를 반환한다.
  * @example first([1, 2, 3]); // 1
  * */
-export function first<T = unknown>(list: T[]) {
-  return nth(0, list);
+export function first<T = unknown>(iterable: Iterable<T>) {
+  return nth(0, iterable);
 }
 
-/** 앞쪽의 n 개의 요소를 제거한 배열을 얻는 함수.
- * @example drop(2, [1, 2, 3, 4]); // [3, 4]
+/** 앞쪽의 n 개의 요소를 제거한 반복자를 얻는 함수.
+ * @example drop(2, "abcde"); // c, d, e
  * */
-export function drop<T = unknown>(length = 1, iterable: Iterable<T>) {
-  const arr = Array.from(iterable);
-  const maxLength = arr.length;
+export function* drop<T = unknown>(count = 1, iterable: Iterable<T>) {
+  let _count = count;
 
-  return arr.slice(length, maxLength);
-}
-
-/** 배열을 하나로 이어주는 함수. 첫번째 인자가 배열임에 주의!
- * @example cat([1, 2], [3, 4], [5, 6]); // [1, 2, 3, 4, 5, 6]
- * */
-export function cat<T = unknown>(...lists: T[][]) {
-  const head = first(lists);
-
-  if (isExist(head)) {
-    return head.concat(...drop(1, lists));
+  for (const e of iterable) {
+    if (_count <= 0) {
+      yield e;
+    }
+    _count -= 1;
   }
-
-  return [];
 }
 
-/** 배열의 맨 앞에 요소를 추가하는 함수. 첫번째 인자가 배열이 아님에 주의!
- * @example construct(0, [1, 2, 3]); // [0, 1, 2, 3]
+/** 뒤쪽의 n 개의 요소를 제거한 반복자를 얻는 함수. 길이가 유한한 반복자여야 함에 주의!
+ * @example dropRight(2, "abcde"); // a, b, c
  * */
-export function construct<T = unknown>(head: T, tails: T[]) {
-  return cat([head], Array.from(tails));
+export function dropRight<T = unknown>(count = 1, iterable: Iterable<T>) {
+  return reverse(drop(count, reverse(iterable)));
 }
 
-/** 열거 가능한 값의 각 요소마다 함수를 적용 후, 하나의 배열로 이어붙여주는 함수. 첫번째 인자가 배열을 반환해야 함에 주의!
- * @example mapCat((n) => [n, n * 3], [0, 1, 2]); // [0, 0, 1, 3, 2, 6]
+/** 반복자들을 하나로 이어주는 함수. 모든 인자가 반복자여야 함에 유의!
+ * @example cat([1, 2], [3, 4], [5, 6]); // 1, 2, 3, 4, 5, 6
  * */
-export function mapCat<T = unknown>(f: (e: T) => T[], iterable: Iterable<T>) {
-  return cat(...Array.from(iterable).map(f));
+export function* cat<T = unknown>(...iterables: Array<Iterable<T>>) {
+  for (const e of iterables) {
+    for (const _e of e) {
+      yield _e;
+    }
+  }
 }
 
-/** 뒤쪽의 n 개의 요소를 제거한 배열을 얻는 함수.
- * @example dropRight(2, [1, 2, 3, 4]); // [1, 2]
+/** 반복자의 맨 앞에 요소를 추가하는 함수. 첫번째 인자가 반복자가 아님에 주의!
+ * @example construct(0, [1, 2, 3]); // 0, 1, 2, 3
  * */
-export function dropRight<T = unknown>(length = 1, iterable: Iterable<T>) {
-  const arr = Array.from(iterable);
-  const maxLength = arr.length;
-
-  return arr.slice(0, maxLength - length);
+export function construct<T = unknown>(head: T, tails: Iterable<T>) {
+  return cat([head], tails);
 }
 
-/** 각 요소의 사이에 요소를 집어넣는 함수.
- * @example interpose<number | string>(() => ',', [1, 2, 3]); // [1, ",", 2, ",", 3]
+/**
+ * 반복자의 각 요소에 대해 매퍼 함수를 적용한 반복자를 얻는 함수.
+ * @example map((c) => c.toUpperCase(), "abcde"); // A, B, C, D, E
  * */
-export function interpose<T = unknown>(
-  inserter: (item: T) => T,
-  collection: Iterable<T>,
+export function* map<T, S>(mapper: (item: T) => S, iterable: Iterable<T>) {
+  for (const e of iterable) {
+    yield mapper(e);
+  }
+}
+
+/** 열거 가능한 값의 각 요소마다 함수를 적용 후, 하나의 배열로 이어붙여주는 함수. 매퍼 함수는 반복자를 반환해야 함에 주의!
+ * @example
+ *  mapCat((n) => [n, -n], [1, 2, 3]); // 1, -1, 2, -2, 3, -3
+ * */
+export function mapCat<T, S>(
+  mapper: (e: T) => Iterable<S>,
+  iterable: Iterable<T>,
+) {
+  return cat(...map(mapper, iterable));
+}
+
+/** 반복자의 각 요소 사이에 특정 요소를 집어넣는 함수.
+ * @example
+ *  interpose((n) => -n, [1, 2, 3]); // 1, -1, 2, -2, 3
+ * */
+export function interpose<T, S>(
+  inserter: (item: T) => T | S,
+  iterable: Iterable<T>,
 ) {
   return dropRight(
     1,
-    mapCat((e) => construct(e, [inserter(e)]), collection),
+    mapCat((e) => construct(e, [inserter(e)]), iterable),
   );
 }
 
@@ -339,4 +356,17 @@ export function* filter<T>(
  * */
 export function toArray<T = unknown>(iter: Iterable<T>) {
   return Array.from(iter);
+}
+
+/**
+ * 인자로 받은 반복자의 역순으로한 반복자를 얻는 함수. 길이가 유한해야 함에 주의!
+ * @example
+ * reverse("abcde"); // e, d, c, b, a
+ * */
+export function* reverse<T = unknown>(iterable: Iterable<T>) {
+  const reversedArr = toArray(iterable).reverse();
+
+  for (const e of reversedArr) {
+    yield e;
+  }
 }

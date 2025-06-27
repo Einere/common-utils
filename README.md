@@ -27,18 +27,20 @@ Thank you. 😄
 | isFunction      | check parameter is function                              |
 | isNumber        | check parameter is valid number                          |
 | getValue        | get value from parameter with default value              |
-| converter       | convert function to apply Array.sort                     |
+| converter       | convert function to apply `Array.sort`                   |
 | infinity        | get infinite iterator                                    |
 | limit           | get nth iterator from another iterator                   |
 | slice           | get iterator from `start` to `end` from another iterator |
-| nth             | get nth item in array                                    |
-| first           | get first item in array                                  |
-| drop            | remove n items from head in array                        |
-| cat             | concat arrays                                            |
-| construct       | construct array with head item                           |
-| mapCat          | concat arrays with map function                          |
-| dropRight       | remove n items from tail in array                        |
-| interpose       | insert returned value at each item in array              |
+| nth             | get nth item from iterator                               |
+| first           | get first item from iterator                             |
+| drop            | remove n items from front in iterator                    |
+| dropRight       | remove n items from back in iterator                     |
+| cat             | concat iterators                                         |
+| construct       | construct new iterator with head item                    |
+| map             | apply `mapper` function to each item in iterator         |
+| mapCat          | concat iterators with `mapper` function                  |
+| interpose       | insert specific value between each item in iterator      |
 | pick            | get object only include specific keys                    |
 | filter          | filter items from iterator                               |
 | toArray         | convert iterator into array                              |
+| reverse         | reverse iterator                                         |
