@@ -182,17 +182,17 @@ export function* infinity(start = 0) {
 }
 
 /**
- * 유한 제네레이터
- * @example limit(10, infinity()); // 0, 1, 2, ..., 9
+ * 반복자에서 "n개의 요소를 취하는 반복자"를 얻는 제네레이터
+ * @example take(10, infinity()); // 0, 1, 2, ..., 9
  *  */
-export function* limit<T = unknown>(limit: number, iter: Iterable<T>) {
-  let count = 0;
+export function* take<T = unknown>(count: number, iter: Iterable<T>) {
+  let _count = 0;
 
   for (const e of iter) {
-    if (count === limit) return;
+    if (_count === count) return;
 
     yield e;
-    count += 1;
+    _count += 1;
   }
 }
 
@@ -352,7 +352,7 @@ export function* filter<T>(
 
 /**
  * 반복자를 배열로 변환하는 함수.
- * @example toArray(limit(5, infinity())); // [0, 1, 2, 3, 4]
+ * @example toArray(take(5, infinity())); // [0, 1, 2, 3, 4]
  * */
 export function toArray<T = unknown>(iter: Iterable<T>) {
   return Array.from(iter);
