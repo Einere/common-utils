@@ -173,6 +173,21 @@ export function converter<T>(predicate: (x: T, b: T) => boolean) {
   };
 }
 
+type Curry<F> = F extends (...args: infer Args) => infer R
+  ? Args extends [infer A, ...infer Rest]
+    ? (arg: A) => Curry<(...args: Rest) => R>
+    : R
+  : never;
+
+function curry<F extends (...args: any[]) => any>(fn: F): Curry<F> {
+  return function curried(...args: any[]): any {
+    if (args.length >= fn.length) {
+      return fn(...args);
+    }
+    return (...next: any[]) => curried(...args, ...next);
+  } as Curry<F>;
+}
+
 /**
  * 무한 제네레이터
  * @example infinity(); // 0, 1, 2, 3...
@@ -360,8 +375,7 @@ export function toArray<T = unknown>(iter: Iterable<T>) {
 
 /**
  * 인자로 받은 반복자의 역순으로한 반복자를 얻는 함수. 길이가 유한해야 함에 주의!
- * @example
- * reverse("abcde"); // e, d, c, b, a
+ * @example reverse("abcde"); // e, d, c, b, a
  * */
 export function* reverse<T = unknown>(iterable: Iterable<T>) {
   const reversedArr = toArray(iterable).reverse();
@@ -370,3 +384,67 @@ export function* reverse<T = unknown>(iterable: Iterable<T>) {
     yield e;
   }
 }
+
+/**
+ * 반복자를 순휘하며 값을 만들어나가는 함수.
+ * @example reduce((acc, item, index) => acc + item, [1, 2, 3, 4]); // 10
+ *
+ * */
+export function reduce<T>(
+  reducer: (acc: T, item: T, index: number) => T,
+  iterable: Iterable<T>,
+): T;
+export function reduce<T, S>(
+  reducer: (acc: S, item: T, index: number) => S,
+  initial: S,
+  iterable: Iterable<T>,
+): S;
+export function reduce<T>(
+  reducer: (acc: T, item: T, index: number) => T,
+  iterable: Iterable<T>,
+): T;
+export function reduce<T, S>(
+  reducer: (acc: S, item: T, index: number) => S,
+  initial: S,
+  iterable: Iterable<T>,
+): S;
+export function reduce<T, S>(
+  reducer: (acc: S, item: T, index: number) => S,
+  initialOrIterable: S | Iterable<T>,
+  maybeIterable?: Iterable<T>,
+): S {
+  let index = 0;
+  let accumulator: S;
+  let iterable: Iterable<T>;
+
+  if (maybeIterable === undefined) {
+    iterable = initialOrIterable as Iterable<T>;
+    const iterator = iterable[Symbol.iterator]();
+    const first = iterator.next();
+    if (first.done) {
+      throw new TypeError(
+        "You are trying to reduce of empty iterable with no initial value.",
+      );
+    }
+    accumulator = first.value as unknown as S;
+
+    let result = iterator.next();
+    while (!result.done) {
+      accumulator = reducer(accumulator, result.value, ++index);
+      result = iterator.next();
+    }
+  } else {
+    accumulator = initialOrIterable as S;
+    iterable = maybeIterable;
+    for (const item of iterable) {
+      accumulator = reducer(accumulator, item, index++);
+    }
+  }
+
+  return accumulator;
+}
+
+// TODO: forEach 구현하기
+// TODO: some 구현하기
+// TODO: every 구현하기
+// TODO: find 구현하기
