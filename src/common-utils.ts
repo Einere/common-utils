@@ -287,11 +287,11 @@ export function* map<T, S>(mapper: (item: T) => S, iterable: Iterable<T>) {
   }
 }
 
-/** 열거 가능한 값의 각 요소마다 함수를 적용 후, 하나의 배열로 이어붙여주는 함수. 매퍼 함수는 반복자를 반환해야 함에 주의!
+/** 반복자의 각 요소에 특정 함수를 취하고 평탄화하는 함수. 매퍼 함수는 반복자를 반환해야 함에 주의!
  * @example
- *  mapCat((n) => [n, -n], [1, 2, 3]); // 1, -1, 2, -2, 3, -3
+ *  flatMap((n) => [n, -n], [1, 2, 3]); // 1, -1, 2, -2, 3, -3
  * */
-export function mapCat<T, S>(
+export function flatMap<T, S>(
   mapper: (e: T) => Iterable<S>,
   iterable: Iterable<T>,
 ) {
@@ -308,7 +308,7 @@ export function interpose<T, S>(
 ) {
   return dropRight(
     1,
-    mapCat((e) => construct(e, [inserter(e)]), iterable),
+    flatMap((e) => construct(e, [inserter(e)]), iterable),
   );
 }
 
