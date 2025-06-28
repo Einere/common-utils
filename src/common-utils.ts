@@ -399,15 +399,6 @@ export function reduce<T, S>(
   initial: S,
   iterable: Iterable<T>,
 ): S;
-export function reduce<T>(
-  reducer: (acc: T, item: T, index: number) => T,
-  iterable: Iterable<T>,
-): T;
-export function reduce<T, S>(
-  reducer: (acc: S, item: T, index: number) => S,
-  initial: S,
-  iterable: Iterable<T>,
-): S;
 export function reduce<T, S>(
   reducer: (acc: S, item: T, index: number) => S,
   initialOrIterable: S | Iterable<T>,
