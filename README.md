@@ -45,3 +45,7 @@ Thank you. 😄
 | toArray         | convert iterator into array                                  |
 | reverse         | reverse iterator                                             |
 | reduce          | make one value by iterating iterable                         |
+| forEach         | apply function to each item in iterator                      |
+| some            | check if any item satisfies `checker` condition in iterator  |
+| every           | check if all items satisfies `checker` condition in iterator |
+| find            | find first item in iterator satisfies `finder` function      |

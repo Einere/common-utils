@@ -435,7 +435,86 @@ export function reduce<T, S>(
   return accumulator;
 }
 
-// TODO: forEach 구현하기
-// TODO: some 구현하기
-// TODO: every 구현하기
-// TODO: find 구현하기
+/**
+ * 반복자의 각 요소에 대해 특정 함수를 실행하는 함수.
+ * @example
+ *  // log 0, 1, 2, 3
+ *  forEach((n) => console.log(n), [0, 1, 2, 3]);
+ * */
+export function forEach<T = unknown>(
+  fn: (item: T) => void,
+  iterable: Iterable<T>,
+) {
+  for (const e of iterable) {
+    fn(e);
+  }
+}
+
+/**
+ * 반복자 내에 특정 조건을 만족하는 요소가 있는지 검사하는 함수.
+ * @example
+ *  some((n) => n % 2 === 0, [0, 1, 2, 3, 4]); // true
+ *  some((n) => n < 0, [0, 1, 2, 3, 4]); // false
+ * */
+export function some<T = unknown>(
+  checker: (item: T) => boolean,
+  iterable: Iterable<T>,
+) {
+  let pass = false;
+
+  for (const e of iterable) {
+    const result = checker(e);
+    if (result) {
+      pass = true;
+      break;
+    }
+  }
+
+  return pass;
+}
+
+/**
+ * 반복자의 모든 요소가 특정 조건을 만족하는지 검사하는 함수
+ * @example
+ *  every((n) => n % 2 === 0, [0, 1, 2, 3, 4]); // false
+ *  every((n) => n >= 0, [0, 1, 2, 3, 4]); // true
+ * */
+export function every<T = unknown>(
+  checker: (item: T) => boolean,
+  iterable: Iterable<T>,
+) {
+  let pass = true;
+
+  for (const e of iterable) {
+    const result = checker(e);
+    if (!result) {
+      pass = false;
+      break;
+    }
+  }
+
+  return pass;
+}
+
+/**
+ * 반복자 내에서 특정 조건을 만족하는 첫 요소를 찾는 함수. 찾지 못하면 undefined 를 반환한다.
+ * @example
+ *  find((n) => n === 3, [0, 1, 2, 3, 4]); // 3
+ *  find((n) => n > 10, [0, 1, 2, 3, 4]); // undefined
+ * */
+export function find<T = unknown>(
+  finder: (item: T) => boolean,
+  iterable: Iterable<T>,
+) {
+  let found = undefined;
+
+  for (const e of iterable) {
+    const result = finder(e);
+    if (result) {
+      found = e;
+      break;
+    }
+  }
+
+  return found;
+}
